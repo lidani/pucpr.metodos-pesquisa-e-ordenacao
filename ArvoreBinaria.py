@@ -80,6 +80,15 @@ class ArvoreBinaria():
 
         return resultados
 
+    def buscar_termos_recursivo(self, termos: [str]) -> [No]:
+        resultados = self.buscar_termos(termos)
+        resultados.sort(reverse=True, key=sortByLen)
+
+        for index, resultados in enumerate(resultados, start=0):
+            print("\nResultados da busca por: {}".format(termos[index]))
+            for resultado in resultados:
+                print("{} - {}".format(resultado.termo, resultado.nome_do_arquivo))
+
     def imprimir(self):
         print("\nExibindo preOrder: \n")
         self._pre(self.raiz)
@@ -112,12 +121,40 @@ class ArvoreBinaria():
         self._pos(no.direita)
         print("{} ".format(no.termo))
 
+    # Função que pergunta ações para o usuário
+    def ask(self):
+        try:
+            # Captura a operação
+            operacao = input('\nOperação 1 = pesquisa\nDigite qualquer tecla e pressione enter para sair\n\nDigite a operação: ')
+
+            # Lista das operações
+            operacoes_disponiveis = ('1')
+
+            # Se a operação for de pesquisa
+            if operacao == '1':
+                # Captura os termos
+                termos = input('\nDigite os termos da busca (separando por espaços): ')
+                # Busca na árvore pelos termos
+                self.buscar_termos_recursivo(termos.split(' '))
+                # Faz a pergunta novamente
+                self.ask()
+
+            # Caso contrário, finaliza
+            else: return print('\nTchau!')
+        except:
+            # Caso haja exceções, finaliza
+            return print('\n\nTchau!')
+
+# Função usada no sort por tamanho de lista
 def sortByLen(e):
+    # Retorna o tamanho do elemento
     return len(e)
 
+# Função principal
 def main():
     arvore = ArvoreBinaria()
 
+    # Popula a árvore
     arvore.insere("bola", "arq1.txt")
     arvore.insere("casa", "arq1.txt")
     arvore.insere("dado", "arq1.txt")
@@ -128,26 +165,30 @@ def main():
     arvore.insere("arvore", "arq2.txt")
 
     # imprime a árvore
-    # arvore.imprimir()
+    arvore.imprimir()
 
+    # Define o termpo de busca recursiva
     busca_termo = "bola"
 
+    # Imprime o label
     print("\n== Resultado da busca por {} ==".format(busca_termo))
+    # Para cada resultado na busca recursiva
     for resultado in arvore.buscar_recursivo(busca_termo):
+        # Imprime o nó formatado
         print("{} - {}".format(resultado.termo, resultado.nome_do_arquivo))
-    print("===================")
 
+    # Busca por termos múltiplos
     print("\n== Buscando por... ==")
+    # Define os termos
     busca_termos = ['arvore', 'dado']
     print(busca_termos)
 
-    resultados = arvore.buscar_termos(busca_termos)
-    resultados.sort(reverse=True, key=sortByLen)
+    # Busca recursivamente múltiplos termos, definidos acima
+    arvore.buscar_termos_recursivo(busca_termos)
+    
+    # Pergunta por ações para o usuário
+    arvore.ask()
 
-    for index, resultados in enumerate(resultados, start=0):
-        print("\nResultados da busca por: {}".format(busca_termos[index]))
-        for resultado in resultados:
-            print("{} - {}".format(resultado.termo, resultado.nome_do_arquivo))
-
+# Início da aplicação
 if __name__ == '__main__':
     main()
