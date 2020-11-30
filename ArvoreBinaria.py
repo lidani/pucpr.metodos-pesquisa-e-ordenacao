@@ -81,12 +81,18 @@ class ArvoreBinaria():
         return resultados
 
     def buscar_termos_recursivo(self, termos: [str]) -> [No]:
+        # Faz a busca dos termos
         resultados = self.buscar_termos(termos)
+        # Ordena a lista para mostrar os termos com mais resultados por primeiro
         resultados.sort(reverse=True, key=sortByLen)
 
+        # Para cada lista de nós de cada termo
         for index, resultados in enumerate(resultados, start=0):
+            # Imprime os resultados do termo [index]
             print("\nResultados da busca por: {}".format(termos[index]))
+            # Para cada resultado no termo [index]
             for resultado in resultados:
+                # Imprime o nó do resultado
                 print("{} - {}".format(resultado.termo, resultado.nome_do_arquivo))
 
     def imprimir(self):
