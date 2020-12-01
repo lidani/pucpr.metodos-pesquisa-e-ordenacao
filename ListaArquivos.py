@@ -1,7 +1,11 @@
+"""
+Author: Gustavo Lidani
 
+Classe que representa um nó da lista de arquivos
+"""
 class No():
-    dado: str = '' # este campo será usado para armazenar o nome de um arquivo
-    frequencia: int = 0 # este campo será usado para armazenar um número inteiro que corresponda à quantidade de vezes que um termo aparece dentro do arquivo
+    dado: str = ''
+    frequencia: int = 0
     proximo: 'No' = None
 
     # constructor
@@ -9,12 +13,20 @@ class No():
         self.dado = dado
         self.frequencia = frequencia
 
+"""
+Author: Gustavo Lidani
+
+Classe que representa uma lista de arquivos
+"""
 class ListaArquivos():
 
     primeiro: No = None
     ultimo: No = None
     tamanho = 0
 
+    """
+    Função que insere um nó no início da lista
+    """
     def inicio(self, no: No):
         if not self.primeiro:
             self.primeiro = no
@@ -26,11 +38,17 @@ class ListaArquivos():
 
         self.tamanho += 1
 
+    """
+    Função que insere um nó depois do nó referenciado (passado por parametro)
+    """
     def depois(self, no: No, novo_no: No):
         novo_no.proximo = no.proximo
         no.proximo = novo_no 
         return novo_no
 
+    """
+    Função que insere um nó no final da lista
+    """
     def final(self, no: No):
         if not self.primeiro:
             self.inicio(no)
@@ -40,6 +58,9 @@ class ListaArquivos():
 
         self.tamanho += 1
 
+    """
+    Função que anda pelos nós imprimindo cada um deles
+    """
     def imprimir(self):
         no = self.primeiro
 
@@ -47,9 +68,15 @@ class ListaArquivos():
             print("'{}' ({})".format(no.dado, no.frequencia))
             no = no.proximo
 
+    """
+    Função que determina se a lista está vazia
+    """
     def vazio(self):
         return self.primeiro == None
 
+    """
+    Função que insere um nó de forma ordenada, usando como base a frequência do arquivo
+    """
     def ordenado(self, no: No):
         if self.vazio() or no.frequencia >= self.primeiro.frequencia:
             self.inicio(no)
@@ -67,6 +94,9 @@ class ListaArquivos():
 
             self.depois(b, no)
     
+    """
+    Função que faz a busca de um arquivo e retorna a frequência do mesmo
+    """
     def buscar(self, dado: str):
         no = self.primeiro
         while (no != None):

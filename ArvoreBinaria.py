@@ -1,6 +1,11 @@
+"""
+Author: Gustavo Lidani
+
+Classe que representa um nó da árvore binária
+"""
 class No():
     termo: str = ''
-    nome_do_arquivo: str = '' # este campo será usado para armazenar um termo que poderá ser utilizado em buscas
+    nome_do_arquivo: str = ''
     esquerda: 'No'
     direita: 'No'
 
@@ -8,12 +13,23 @@ class No():
         self.termo = termo
         self.nome_do_arquivo = nome_do_arquivo
 
+"""
+Author: Gustavo Lidani
+
+Classe que representa uma árvore binária
+"""
 class ArvoreBinaria():
     raiz: No = None
 
+    """
+    Função que determina se a árvore está vazia
+    """
     def vazia(self):
         return self.raiz == None
 
+    """
+    Função que insere um nó na árvore
+    """
     def insere(self, termo: str, nome_do_arquivo: str):
         no = No(termo, nome_do_arquivo)
         no.direita = None
@@ -39,6 +55,9 @@ class ArvoreBinaria():
                     anterior.direita = no
                     return
     
+    """
+    Função que faz a busca de um nó que bate com o termo
+    """
     def buscar(self, no: No, termo: str) -> No:
         if self.vazia(): return
 
@@ -56,9 +75,11 @@ class ArvoreBinaria():
             # busca na subárvore direita
             return self.buscar(no.direita, termo)
 
+    """
+    Função que faz a busca recursiva de vários nós que batem com cada termo
+    """
     def buscar_recursivo(self, termo: str) -> [No]:
         resultados = []
-        # Pesquisar por bola
         resultado = self.buscar(self.raiz, termo)
 
         if not resultado: return resultados
@@ -73,6 +94,9 @@ class ArvoreBinaria():
 
         return resultados
 
+    """
+    Função que faz a busca de um nó que bate com cada termo
+    """
     def buscar_termos(self, termos: [str]) -> [[No]]:
         resultados = []
         for termo in termos:
@@ -80,6 +104,9 @@ class ArvoreBinaria():
 
         return resultados
 
+    """
+    Função que faz a busca recursiva (procura até encontrar todos que batem com cada termo) por uma lista de termos
+    """
     def buscar_termos_recursivo(self, termos: [str]) -> [No]:
         # Faz a busca dos termos
         resultados = self.buscar_termos(termos)
@@ -95,6 +122,9 @@ class ArvoreBinaria():
                 # Imprime o nó do resultado
                 print("{} - {}".format(resultado.termo, resultado.nome_do_arquivo))
 
+    """
+    Imprime a árvore nos 3 formatos (pre, in e pos)
+    """
     def imprimir(self):
         print("\nExibindo preOrder: \n")
         self._pre(self.raiz)
@@ -106,6 +136,13 @@ class ArvoreBinaria():
         self._pos(self.raiz)
 
 
+    """
+    Ordem Simétrica:
+
+    Percorre a subárvore esquerda em ordem simétrica
+    Visita a raiz
+    Percorre a subárvore direita em ordem simétrica
+    """
     def _in(self, no: No):
         if not no: return
 
@@ -113,19 +150,33 @@ class ArvoreBinaria():
         print("-{} - {}".format(no.termo, no.nome_do_arquivo))
         self._in(no.direita)
 
+    """
+    Pré-ordem (ou profundidade):
+
+    Visita a raiz
+    Percorre a subárvore esquerda em pré-ordem
+    Percorre a subárvore direita em pré-ordem
+    """
     def _pre(self, no: No):
         if not no: return
 
-        print("{} ".format(no.termo))
+        print("-{} - {}".format(no.termo, no.nome_do_arquivo))
         self._pre(no.esquerda)
         self._pre(no.direita)
 
+    """
+    Pós-ordem:
+
+    Percorre a subárvore esquerda em pós-ordem
+    Percorre a subárvore direita em pós-ordem
+    Visita a raiz
+    """
     def _pos(self, no: No):
         if not no: return
 
         self._pos(no.esquerda)
         self._pos(no.direita)
-        print("{} ".format(no.termo))
+        print("-{} - {}".format(no.termo, no.nome_do_arquivo))
 
     # Função que pergunta ações para o usuário
     def ask(self):
